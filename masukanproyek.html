@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Halaman Input Data</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <h2>Form Input Tulisan & Foto</h2>
+  <form id="formUpload">
+    <input type="text" id="judul" placeholder="Judul tulisan" required><br><br>
+    <textarea id="deskripsi" placeholder="Isi tulisan..." required></textarea><br><br>
+    <input type="file" id="foto" accept="image/*" required><br><br>
+    <button type="submit">Kirim Data</button>
+  </form>
+
+  <br>
+  <!-- Tombol untuk berpindah ke halaman galeri -->
+  <a href="tugas.html">Lihat Hasil Postingan di Halaman Lain &rarr;</a>
+
+  <script>
+    // Konfigurasi Supabase
+    const SUPABASE_URL = 'https://ncibrdmqxlkkeyenhldz.supabase.co/rest/v1/';
+    const SUPABASE_KEY = 'sb_publishable_hSYSRXclsfSJuLFgmTDLAQ_ymfBrR-V';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const form = document.getElementById('formUpload');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const judul = document.getElementById('judul').value;
+      const deskripsi = document.getElementById('deskripsi').value;
+      const fileFoto = document.getElementById('foto').files[0];
+      const namaFile = `${Date.now()}_${fileFoto.name}`;
+
+      // 1. Upload foto ke Supabase Storage
+      const { error: uploadError } = await db.storage
+        .from('galeri')
+        .upload(namaFile, fileFoto);
+
+      if (uploadError) {
+        alert('Gagal upload foto: ' + uploadError.message);
+        return;
+      }
+
+      // 2. Ambil URL publik foto
+      const { data: urlData } = db.storage
+        .from('galeri')
+        .getPublicUrl(namaFile);
+
+      // 3. Simpan data ke tabel database Supabase
+      const { error: dbError } = await db
+        .from('postingan')
+        .insert([{ judul: judul, deskripsi: deskripsi, foto_url: urlData.publicUrl }]);
+
+      if (dbError) {
+        alert('Gagal simpan data: ' + dbError.message);
+      } else {
+        alert('Data berhasil disimpan! Silakan cek halaman galeri.');
+        form.reset();
+      }
+    });
+  </script>
+
+</body>
+</html>
