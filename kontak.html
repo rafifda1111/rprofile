@@ -57,7 +57,7 @@ const namaFile = `${Date.now()}.${ekstensi}`; // Hasilnya jadi angka unik murni 
 
       // 3. Simpan data ke tabel database Supabase
       const { error: dbError } = await db
-        .from('Foto')
+        .from('galeri')
         .insert([{ judul: judul, deskripsi: deskripsi, foto_url: urlData.publicUrl }]);
 
       if (dbError) {
