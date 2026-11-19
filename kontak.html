@@ -20,6 +20,11 @@
   <a href="tugas.html">Lihat Hasil Postingan di Halaman Lain &rarr;</a>
 
   <script>
+    // Ganti cara pembuatan nama file agar lebih aman dari karakter aneh
+const fileFoto = document.getElementById('foto').files[0];
+const ekstensi = fileFoto.name.split('.').pop(); // Ambil ekstensinya saja (misal: jpg/png)
+const namaFile = `${Date.now()}.${ekstensi}`; // Hasilnya jadi angka unik murni (contoh: 17182938.jpg)
+    
     // Konfigurasi Supabase
     const SUPABASE_URL = 'https://ncibrdmqxlkkeyenhldz.supabase.co/rest/v1/';
     const SUPABASE_KEY = 'sb_publishable_hSYSRXclsfSJuLFgmTDLAQ_ymfBrR-V';
