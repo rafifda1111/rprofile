@@ -6,7 +6,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <div class="tugas"><button 
+    <!--div class="tugas"><button 
         style="background-color: #1d5ce5;
      color: white;
      width: 200px;
@@ -18,7 +18,7 @@
      border-bottom-left-radius: 12px;
      border-bottom-right-radius: 12px;
      border-top: 1px solid #ffffff;
-     "onclick="window.location.href='kontak.html'">Tugas</button></div>
+     "onclick="window.location.href='kontak.html'">Tugas</button></div-->
 
   <h2>Daftar Postingan yang Telah Di-input</h2>
   <a href="kontak.html">&larr; Kembali ke Form Input</a>
@@ -39,7 +39,7 @@
       
       // Ambil data dari tabel 'postingan', urutkan dari yang terbaru
       const { data, error } = await db
-        .from('postingan')
+        .from('Foto')
         .select('*')
         .order('created_at', { ascending: false });
 
