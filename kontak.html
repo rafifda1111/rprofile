@@ -20,13 +20,8 @@
   <a href="galeri.html">Lihat Hasil Postingan di Halaman Lain &rarr;</a>
 
   <script>
-    // Ganti cara pembuatan nama file agar lebih aman dari karakter aneh
-const fileFoto = document.getElementById('foto').files[0];
-const ekstensi = fileFoto.name.split('.').pop(); // Ambil ekstensinya saja (misal: jpg/png)
-const namaFile = `${Date.now()}.${ekstensi}`; // Hasilnya jadi angka unik murni (contoh: 17182938.jpg)
-    
-    // Konfigurasi Supabase
-    const SUPABASE_URL = 'https://ncibrdmqxlkkeyenhldz.supabase.co/rest/v1/';
+    // Konfigurasi Supabase (URL diperbaiki tanpa /rest/v1/)
+    const SUPABASE_URL = 'https://ncibrdmqxlkkeyenhldz.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_hSYSRXclsfSJuLFgmTDLAQ_ymfBrR-V';
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -38,11 +33,14 @@ const namaFile = `${Date.now()}.${ekstensi}`; // Hasilnya jadi angka unik murni 
       const judul = document.getElementById('judul').value;
       const deskripsi = document.getElementById('deskripsi').value;
       const fileFoto = document.getElementById('foto').files[0];
-      const namaFile = `${Date.now()}_${fileFoto.name}`;
 
-      // 1. Upload foto ke Supabase Storage
+      // Ambil ekstensi file secara bersih & buat nama file unik (mencegah error Invalid path)
+      const ekstensi = fileFoto.name.split('.').pop();
+      const namaFile = `${Date.now()}.${ekstensi}`;
+
+      // 1. Upload foto ke Supabase Storage (Ganti 'foto' dengan nama bucket kamu jika berbeda)
       const { error: uploadError } = await db.storage
-        .from('foto')
+        .from('foto') 
         .upload(namaFile, fileFoto);
 
       if (uploadError) {
@@ -50,12 +48,12 @@ const namaFile = `${Date.now()}.${ekstensi}`; // Hasilnya jadi angka unik murni 
         return;
       }
 
-      // 2. Ambil URL publik foto
+      // 2. Ambil URL publik foto (Bucket disamakan menjadi 'foto')
       const { data: urlData } = db.storage
-        .from('galeri')
+        .from('foto')
         .getPublicUrl(namaFile);
 
-      // 3. Simpan data ke tabel database Supabase
+      // 3. Simpan data ke tabel database Supabase (Tabel 'galeri')
       const { error: dbError } = await db
         .from('galeri')
         .insert([{ judul: judul, deskripsi: deskripsi, foto_url: urlData.publicUrl }]);
