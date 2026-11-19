@@ -39,7 +39,7 @@
       
       // Ambil data dari tabel 'postingan', urutkan dari yang terbaru
       const { data, error } = await db
-        .from('Foto')
+        .from('galeri')
         .select('*')
         .order('created_at', { ascending: false });
 
