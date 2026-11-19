@@ -42,7 +42,7 @@ const namaFile = `${Date.now()}.${ekstensi}`; // Hasilnya jadi angka unik murni 
 
       // 1. Upload foto ke Supabase Storage
       const { error: uploadError } = await db.storage
-        .from('galeri')
+        .from('foto')
         .upload(namaFile, fileFoto);
 
       if (uploadError) {
@@ -57,7 +57,7 @@ const namaFile = `${Date.now()}.${ekstensi}`; // Hasilnya jadi angka unik murni 
 
       // 3. Simpan data ke tabel database Supabase
       const { error: dbError } = await db
-        .from('postingan')
+        .from('Foto')
         .insert([{ judul: judul, deskripsi: deskripsi, foto_url: urlData.publicUrl }]);
 
       if (dbError) {
