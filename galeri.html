@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Tugas</title>
+  <title>Tugas Galeri</title>
+  <!-- Memanggil library Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -11,11 +12,11 @@
   <a href="kontak.html">&larr; Kembali ke Form Input</a>
   <hr>
 
-  <!-- Tempat di mana data dari database akan dimunculkan -->
+  <!-- Tempat di mana data dari database akan dimunculkan secara otomatis -->
   <div id="daftarData">Memuat data...</div>
 
   <script>
-    // Konfigurasi Supabase (URL sudah diperbaiki tanpa /rest/v1/)
+    // Konfigurasi Supabase (Harus sama persis dengan halaman input)
     const SUPABASE_URL = 'https://ncibrdmqxlkkeyenhldz.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_hSYSRXclsfSJuLFgmTDLAQ_ymfBrR-V';
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -36,11 +37,11 @@
       }
 
       if (data.length === 0) {
-        wadah.innerHTML = 'Belum ada data yang di-input.';
+        wadah.innerHTML = 'Belum ada data atau foto yang di-input.';
         return;
       }
 
-      // Kosongkan teks "Memuat data..." lalu tampilkan datanya
+      // Kosongkan teks "Memuat data..." lalu tampilkan datanya ke layar
       wadah.innerHTML = '';
       data.forEach(item => {
         wadah.innerHTML += `
